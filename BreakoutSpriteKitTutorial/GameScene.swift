@@ -21,7 +21,6 @@ let PaddleCategory : UInt32 = 0x1 << 3 // 00000000000000000000000000001000
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var isFingerOnPaddle = false
     
     override func didMoveToView(view: SKView) {
         super.didMoveToView(view)
@@ -111,15 +110,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if let body = physicsWorld.bodyAtPoint(touchLocation) {
             if body.node!.name == PaddleCategoryName {
-                println("Began touch on paddle")
-                isFingerOnPaddle = true
             }
         }
     }
     
     override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
         // 1. Check whether user touched the paddle
-        if isFingerOnPaddle {
             // 2. Get touch location
             var touch = touches.first as! UITouch
             var touchLocation = touch.locationInNode(self)
@@ -137,11 +133,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             // 6. Update paddle position
             paddle.position = CGPointMake(paddleX, paddle.position.y)
-        }
-    }
-    
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        isFingerOnPaddle = false
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
